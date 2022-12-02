@@ -1,0 +1,45 @@
+pragma solidity ^0.5.0;
+
+contract Exchange {
+    // The exchange is a mapping from token symbol to Token data
+    mapping(string => Token) public tokens;
+
+    // A struct representing a token
+    struct Token {
+        string name;
+        uint256 supply;
+        address owner;
+    }
+
+    // The exchange owner can add a new token to the exchange
+    function addToken(string memory _symbol, string memory _name, uint256 _supply) public {
+        require(msg.sender == owner);
+        tokens[_symbol] = Token(_name, _supply, msg.sender);
+    }
+
+    // Users can buy tokens from the exchange
+    function buyToken(string memory _symbol, uint256 _amount) public {
+        Token storage token = tokens[_symbol];
+        require(_amount <= token.supply);
+
+        // Transfer the tokens to the buyer
+        token.owner.transfer(_amount);
+
+        // Update the token supply on the exchange
+        token.supply -= _amount;
+    }
+
+    // Users can sell tokens to the exchange
+    function sellToken(string memory _symbol, uint256 _amount) public {
+        Token storage token = tokens[_symbol];
+
+        // Transfer the tokens from the seller
+        require(token.owner.transferFrom(msg.sender, _amount));
+
+        // Update the token supply on the exchange
+        token.supply += _amount;
+
+        // Transfer the ether to the seller
+        msg.sender.transfer(msg.value);
+    }
+}
