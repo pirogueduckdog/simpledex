@@ -1,0 +1,100 @@
+<html>
+  <head>
+    <title>Decentralized Exchange</title>
+  </head>
+  <body>
+    <h1>Decentralized Exchange</h1>
+
+    <h2>Token List</h2>
+    <ul id="tokenList">
+      <!-- This will be populated with the list of tokens from the contract -->
+    </ul>
+
+    <h2>Buy Tokens</h2>
+    <form id="buyForm">
+      <label>
+        Token Symbol:
+        <input type="text" id="buySymbol" />
+      </label>
+      <label>
+        Amount:
+        <input type="number" id="buyAmount" />
+      </label>
+      <button type="submit">Buy</button>
+    </form>
+
+    <h2>Sell Tokens</h2>
+    <form id="sellForm">
+      <label>
+        Token Symbol:
+        <input type="text" id="sellSymbol" />
+      </label>
+      <label>
+        Amount:
+        <input type="number" id="sellAmount" />
+      </label>
+      <button type="submit">Sell</button>
+    </form>
+
+    <!-- Include the web3 library -->
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.3.1/dist/web3.min.js"></script>
+    <script>
+      // Your Ethereum provider (e.g. MetaMask)
+      const provider = new Web3.providers.HttpProvider("http://localhost:8545");
+      const web3 = new Web3(provider);
+
+      // The address of your smart contract on the blockchain
+      const contractAddress = "0x123...";
+
+      // The ABI of your smart contract
+      const contractABI = [
+        {
+          "inputs": [
+            {
+              "internalType": "string",
+              "name": "_symbol",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "_name",
+              "type": "string"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_supply",
+              "type": "uint256"
+            }
+          ],
+          "name": "addToken",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "string",
+              "name": "_symbol",
+              "type": "string"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_amount",
+              "type": "uint256"
+            }
+          ],
+          "name": "buyToken",
+          "outputs": [],
+          "stateMutability": "payable",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "string",
+              "name": "",
+              "type": "string"
+            }
+          ],
+          "name":
